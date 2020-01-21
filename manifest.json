@@ -10,7 +10,6 @@
       "48": "icons/9gag-48.png"
     },
     "background": {
-        "matches": ["*://*.9gag.com/*"],
         "scripts": [
             "9gag_media_download_helper.js"
         ]
