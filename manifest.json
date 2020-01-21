@@ -1,0 +1,21 @@
+{
+
+    "manifest_version": 2,
+    "name": "9gag media download helper",
+    "version": "1.0",
+  
+    "description": "Adds a option to download 9gag images and videos to download them in .mp4 or .jpg format, instead of the .webp and .webm format, which is the typical option when using the 'save video as' or 'save image as' default options in the browser.",
+    "homepage_url": "https://github.com/minhaz1217/9gag-media-download-helper",
+    "icons": {
+      "48": "icons/9gag-48.png"
+    },
+    "background": {
+        "matches": ["*://*.9gag.com/*"],
+        "scripts": [
+            "9gag_media_download_helper.js"
+        ]
+    },
+    "permissions": ["contextMenus","downloads"]
+  
+  
+  }
