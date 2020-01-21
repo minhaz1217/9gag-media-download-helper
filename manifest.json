@@ -14,7 +14,7 @@
             "9gag_media_download_helper.js"
         ]
     },
-    "permissions": ["contextMenus","downloads"]
+    "permissions": ["contextMenus","downloads","tabs"]
   
   
   }

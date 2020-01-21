@@ -7,35 +7,44 @@ browser.contextMenus.create({
 });
 
 browser.contextMenus.onClicked.addListener((info, tab) => {
-
-    // console.log("Info\n");
-    // console.log(info);
-    // console.log("TAB\n");
-    // console.log(tab);
-    // console.log(info.pageUrl);
-    // console.log(document.location);
-    // console.log(window.location);
     if (info.menuItemId === "download-9gag-media") {
-        // console.log(info);
         var url = info.srcUrl;
         var ext = getUrlExtension(url);
         var mainUrl = "";
+        var fileName = "";
+        var title = tab.title;
+        var regex = /(9gag.com\/gag)/g;
+        if(tab.url.match(regex)){
+            var title = tab.title;
+            fileName = title.substr(0, title.lastIndexOf('-')-1 );
+        }
         // console.log(fileName, url, ext);
         if (ext == "mp4" || ext == "jpg") {
             mainUrl = url;
+            if(ext == 'jpg' && fileName == ""){
+                fileName = info.linkText;
+            }
         } else if (ext == "webp" || ext == "webm") {
             if (ext == "webp") {
                 mainUrl = url.substr(0, url.lastIndexOf('.')) + ".jpg";
+                if(fileName == ""){
+                    fileName = info.linkText;
+                }
             } else {
                 mainUrl = url.substr(0, url.lastIndexOf('.')) + ".mp4";
             }
         }
         if(mainUrl != ""){
             var downloadUrl = mainUrl;
-            var fileName = getFileName(mainUrl) + "." + getUrlExtension(mainUrl);
+            if(fileName == ""){
+                fileName = getFileName(mainUrl) + "." + getUrlExtension(mainUrl);
+            }else{
+                fileName +="." + getUrlExtension(mainUrl);
+            }
+
             var downloading = browser.downloads.download({
                 saveAs: true,
-                filename: fileName,
+                filename: reverseEscapeHTML(fileName),
                 url: downloadUrl
             });
             //downloading.then(onStartedDownload, onFailed);
@@ -60,4 +69,9 @@ function escapeHTML(str) {
         .replace(/&/g, "&amp;")
         .replace(/"/g, "&quot;").replace(/'/g, "&#39;")
         .replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+function reverseEscapeHTML(str){
+    return String(str).replace("&#039;", "'")
+        .replace("&#amp;","&")
+        .replace("&rsquo;", "'");
 }
