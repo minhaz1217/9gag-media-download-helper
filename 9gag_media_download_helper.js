@@ -73,5 +73,10 @@ function escapeHTML(str) {
 function reverseEscapeHTML(str){
     return String(str).replace("&#039;", "'")
         .replace("&#amp;","&")
-        .replace("&rsquo;", "'");
+        .replace("&rsquo;", "'")
+        .replace("&quot;", "'")
+        .replace("?", "")
+        .replace("<", "")
+        .replace(">", "")
+        .replace("*", "");
 }
