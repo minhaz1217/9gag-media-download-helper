@@ -25,14 +25,23 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
                 fileName = info.linkText;
             }
         } else if (ext == "webp" || ext == "webm") {
+            var urlWithoutExt = getUrlWithoutExtension(url);
+            var codecSuffix = "";
+            var outputExt = "";
             if (ext == "webp") {
-                mainUrl = url.substr(0, url.lastIndexOf('.')) + ".jpg";
+                codecSuffix = "wp";
+                outputExt = "jpg";
                 if(fileName == ""){
                     fileName = info.linkText;
                 }
             } else {
-                mainUrl = url.substr(0, url.lastIndexOf('.')) + ".mp4";
+                codecSuffix = "vp9";
+                outputExt = "mp4";
             }
+            if (hasCodecSuffix(urlWithoutExt, codecSuffix))
+                mainUrl = getUrlWithoutCodecSuffix(urlWithoutExt, codecSuffix) + '.' + outputExt;
+            else
+                mainUrl = urlWithoutExt + '.' + outputExt;
         }
         if(mainUrl != ""){
             var downloadUrl = mainUrl;
@@ -57,9 +66,22 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
 function getUrlExtension(url) {
     return url.substr(url.lastIndexOf('.') + 1);
 }
+function getUrlWithoutExtension(fileUrl) {
+    return fileUrl.substr(0, fileUrl.lastIndexOf('.'))
+}
 
 function getFileName(url) {
     return url.substr(url.lastIndexOf('/') + 1, url.lastIndexOf('.') - 1 - url.lastIndexOf('/'));
+}
+
+function hasCodecSuffix(fileUrlWithoutExt, codecStr) {
+    var possibleSuffix = fileUrlWithoutExt.substr(fileUrlWithoutExt.length - codecStr.length, codecStr.length)
+    if (possibleSuffix == codecStr)
+        return true;
+    return false;
+}
+function getUrlWithoutCodecSuffix(fileUrlWithoutExt, codecStr){
+    return fileUrlWithoutExt.substr(0, fileUrlWithoutExt.length - codecStr.length)
 }
 // https://gist.github.com/Rob--W/ec23b9d6db9e56b7e4563f1544e0d546
 function escapeHTML(str) {
