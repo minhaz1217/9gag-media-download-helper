@@ -50,13 +50,14 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
             }else{
                 fileName +="." + getUrlExtension(mainUrl);
             }
+            console.log(fileName);
 
             var downloading = browser.downloads.download({
                 saveAs: true,
                 filename: reverseEscapeHTML(fileName),
                 url: downloadUrl
             });
-            //downloading.then(onStartedDownload, onFailed);
+            // downloading.then(onStartedDownload, onFailed);
         }else{
             console.log("Invalid File");
         }
@@ -88,17 +89,20 @@ function escapeHTML(str) {
     // Note: string cast using String; may throw if `str` is non-serializable, e.g. a Symbol.
     // Most often this is not the case though.
     return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/"/g, "&quot;").replace(/'/g, "&#39;")
-        .replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        .replaceAll(/&/g, "&amp;")
+        .replaceAll(/"/g, "&quot;").replace(/'/g, "&#39;")
+        .replaceAll(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 function reverseEscapeHTML(str){
     return String(str).replace("&#039;", "'")
-        .replace("&#amp;","&")
-        .replace("&rsquo;", "'")
-        .replace("&quot;", "'")
-        .replace("?", "")
-        .replace("<", "")
-        .replace(">", "")
-        .replace("*", "");
+        .replaceAll("&#amp;","&")
+        .replaceAll("&rsquo;", "'")
+        .replaceAll("&quot;", "'")
+        .replaceAll("?", "")
+        .replaceAll("|", "")
+        .replaceAll("\"", "'")
+        .replaceAll(":", "_")
+        .replaceAll("<", "")
+        .replaceAll(">", "")
+        .replaceAll("*", "");
 }
